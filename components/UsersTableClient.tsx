@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useState, useRef, useMemo } from 'react';
-import { Trash2, ChevronUp, ChevronDown } from 'lucide-react';
+import { Trash2, ChevronUp, ChevronDown, UserPlus } from 'lucide-react';
 import { ConfirmDeleteModal } from './ConfirmDeleteModal';
+import { AddUserModal } from './AddUserModal';
 
 export interface User {
   id: string;
@@ -23,15 +24,31 @@ export const UsersTableClient = ({ initialUsers }: UsersTableClientProps) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortDirection, setSortDirection] = useState<SortDirection>('none');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [userToDelete, setUserToDelete] = useState<User | null>(null);
   
   // To return focus to the button that opened the modal
   const triggerRef = useRef<HTMLButtonElement | null>(null);
+  const addBtnRef = useRef<HTMLButtonElement | null>(null);
 
   const handleDeleteClick = (user: User, event: React.MouseEvent<HTMLButtonElement>) => {
     triggerRef.current = event.currentTarget;
     setUserToDelete(user);
     setIsModalOpen(true);
+  };
+
+  const handleAddClick = () => {
+    setIsAddModalOpen(true);
+  };
+
+  const handleConfirmAdd = (newUser: Omit<User, 'id'>) => {
+    const userWithId: User = {
+      ...newUser,
+      id: typeof crypto !== 'undefined' && crypto.randomUUID 
+        ? crypto.randomUUID() 
+        : `user-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
+    };
+    setUsers(prevUsers => [userWithId, ...prevUsers]);
   };
 
   const handleConfirmDelete = () => {
@@ -46,6 +63,13 @@ export const UsersTableClient = ({ initialUsers }: UsersTableClientProps) => {
     // Return focus to the trigger button
     if (triggerRef.current) {
       triggerRef.current.focus();
+    }
+  };
+
+  const handleCloseAddModal = () => {
+    setIsAddModalOpen(false);
+    if (addBtnRef.current) {
+      addBtnRef.current.focus();
     }
   };
 
@@ -89,18 +113,30 @@ export const UsersTableClient = ({ initialUsers }: UsersTableClientProps) => {
 
   return (
     <>
-      <div className="mb-4 relative">
-        <label htmlFor="user-search" className="sr-only">
-          Search users
-        </label>
-        <input
-          id="user-search"
-          type="text"
-          placeholder="Search users..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full sm:max-w-xs px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-        />
+      <div className="mb-4 flex items-center justify-between gap-3">
+        <div className="relative flex-1 sm:max-w-xs">
+          <label htmlFor="user-search" className="sr-only">
+            Search users
+          </label>
+          <input
+            id="user-search"
+            type="text"
+            placeholder="Search users..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+          />
+        </div>
+
+        <button
+          ref={addBtnRef}
+          onClick={handleAddClick}
+          className="flex items-center justify-center space-x-2 px-3 sm:px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 shadow-sm shrink-0 min-h-[42px] min-w-[44px]"
+          aria-label="Add new user"
+        >
+          <UserPlus className="w-5 h-5" />
+          <span className="font-semibold text-sm hidden sm:inline">Add User</span>
+        </button>
       </div>
 
       <div className="bg-white shadow-sm ring-1 ring-gray-200 sm:rounded-lg overflow-hidden">
@@ -196,6 +232,12 @@ export const UsersTableClient = ({ initialUsers }: UsersTableClientProps) => {
         onClose={handleCloseModal}
         onConfirm={handleConfirmDelete}
         username={userToDelete?.username || ''}
+      />
+
+      <AddUserModal
+        isOpen={isAddModalOpen}
+        onClose={handleCloseAddModal}
+        onAdd={handleConfirmAdd}
       />
     </>
   );

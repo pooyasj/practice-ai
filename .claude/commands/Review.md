@@ -1,0 +1,1 @@
+Review the entire project, understand it well, and explain it to me, without making any changes to the code.
