@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo, useTransition, useEffect } from 'react';
 import { Trash2, ChevronUp, ChevronDown, UserPlus } from 'lucide-react';
 import { ConfirmDeleteModal } from './ConfirmDeleteModal';
 import { AddUserModal } from './AddUserModal';
+import { deleteUserAction, addUserAction } from '@/lib/actions';
 
 export interface User {
   id: string;
@@ -21,6 +22,13 @@ type SortDirection = 'asc' | 'desc' | 'none';
 
 export const UsersTableClient = ({ initialUsers }: UsersTableClientProps) => {
   const [users, setUsers] = useState<User[]>(initialUsers);
+  const [isPending, startTransition] = useTransition();
+
+  // Keep state in sync with initialUsers from server
+  useEffect(() => {
+    setUsers(initialUsers);
+  }, [initialUsers]);
+
   const [searchQuery, setSearchQuery] = useState('');
   const [sortDirection, setSortDirection] = useState<SortDirection>('none');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -41,19 +49,38 @@ export const UsersTableClient = ({ initialUsers }: UsersTableClientProps) => {
     setIsAddModalOpen(true);
   };
 
-  const handleConfirmAdd = (newUser: Omit<User, 'id'>) => {
-    const userWithId: User = {
-      ...newUser,
-      id: typeof crypto !== 'undefined' && crypto.randomUUID 
-        ? crypto.randomUUID() 
-        : `user-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
-    };
-    setUsers(prevUsers => [userWithId, ...prevUsers]);
+  const handleConfirmAdd = async (newUser: Omit<User, 'id'>) => {
+    // Optimistic UI update
+    const tempId = `temp-${Date.now()}`;
+    const optimisticUser: User = { ...newUser, id: tempId };
+    
+    setUsers(prevUsers => [optimisticUser, ...prevUsers]);
+    
+    startTransition(async () => {
+      const result = await addUserAction(newUser);
+      if (!result.success) {
+        // Rollback on failure
+        setUsers(prevUsers => prevUsers.filter(u => u.id !== tempId));
+        alert('Failed to add user');
+      }
+    });
   };
 
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = async () => {
     if (userToDelete) {
-      setUsers(prevUsers => prevUsers.filter(u => u.id !== userToDelete.id));
+      const userId = userToDelete.id;
+      // Optimistic UI update
+      const originalUsers = users;
+      setUsers(prevUsers => prevUsers.filter(u => u.id !== userId));
+      
+      startTransition(async () => {
+        const result = await deleteUserAction(userId);
+        if (!result.success) {
+          // Rollback on failure
+          setUsers(originalUsers);
+          alert('Failed to delete user');
+        }
+      });
       setUserToDelete(null);
     }
   };

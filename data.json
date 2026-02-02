@@ -1,19 +1,5 @@
 [
   {
-    "id": "1",
-    "username": "jdoe",
-    "email": "jdoe@example.com",
-    "role": "admin",
-    "status": "active"
-  },
-  {
-    "id": "2",
-    "username": "asmith",
-    "email": "asmith@example.com",
-    "role": "editor",
-    "status": "active"
-  },
-  {
     "id": "3",
     "username": "bjones",
     "email": "bjones@example.com",
@@ -68,5 +54,41 @@
     "email": "smartinez@example.com",
     "role": "user",
     "status": "active"
+  },
+
+  {
+    "id": "11",
+    "username": "jwilson",
+    "email": "jwilson@example.com",
+    "role": "user",
+    "status": "active"
+  },
+  {
+    "id": "12",
+    "username": "kthomas",
+    "email": "kthomas@example.com",
+    "role": "editor",
+    "status": "inactive"
+  },
+  {
+    "id": "13",
+    "username": "amorgan",
+    "email": "amorgan@example.com",
+    "role": "user",
+    "status": "banned"
+  },
+  {
+    "id": "14",
+    "username": "rjackson",
+    "email": "rjackson@example.com",
+    "role": "admin",
+    "status": "active"
+  },
+  {
+    "id": "15",
+    "username": "nlopez",
+    "email": "nlopez@example.com",
+    "role": "user",
+    "status": "inactive"
   }
 ]

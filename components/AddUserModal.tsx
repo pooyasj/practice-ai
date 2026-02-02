@@ -19,35 +19,44 @@ export const AddUserModal = ({ isOpen, onClose, onAdd }: AddUserModalProps) => {
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const modalRef = useRef<HTMLDivElement>(null);
+  const dialogRef = useRef<HTMLDialogElement>(null);
   const firstInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
+    const dialog = dialogRef.current;
+    if (!dialog) return;
 
     if (isOpen) {
-      document.addEventListener('keydown', handleEscape);
-      firstInputRef.current?.focus();
-      document.body.style.overflow = 'hidden';
-      // Reset form on open
-      setFormData({
-        username: '',
-        email: '',
-        role: 'user',
-        status: 'active',
-      });
-      setErrors({});
+      if (!dialog.open) {
+        dialog.showModal();
+        firstInputRef.current?.focus();
+        // Reset form on open
+        setFormData({
+          username: '',
+          email: '',
+          role: 'user',
+          status: 'active',
+        });
+        setErrors({});
+      }
+    } else {
+      if (dialog.open) {
+        dialog.close();
+      }
     }
+  }, [isOpen]);
 
-    return () => {
-      document.removeEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'unset';
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+
+    const handleClose = () => {
+      onClose();
     };
-  }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
+    dialog.addEventListener('close', handleClose);
+    return () => dialog.removeEventListener('close', handleClose);
+  }, [onClose]);
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
@@ -69,18 +78,20 @@ export const AddUserModal = ({ isOpen, onClose, onAdd }: AddUserModalProps) => {
     }
   };
 
+  const handleBackdropClick = (e: React.MouseEvent) => {
+    if (e.target === dialogRef.current) {
+      onClose();
+    }
+  };
+
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
-      onClick={onClose}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="add-user-title"
+    <dialog
+      ref={dialogRef}
+      className="bg-transparent p-4 w-full max-w-md backdrop:bg-black/50 backdrop:backdrop-blur-sm mx-auto"
+      onClick={handleBackdropClick}
     >
       <div
-        ref={modalRef}
-        className="bg-white rounded-xl shadow-xl max-w-md w-full overflow-hidden animate-in fade-in zoom-in duration-200"
-        onClick={(e) => e.stopPropagation()}
+        className="bg-white rounded-xl shadow-xl overflow-hidden animate-in fade-in zoom-in duration-200"
       >
         <div className="px-6 py-6">
           <div className="flex items-center justify-between mb-6">
@@ -189,6 +200,6 @@ export const AddUserModal = ({ isOpen, onClose, onAdd }: AddUserModalProps) => {
           </form>
         </div>
       </div>
-    </div>
+    </dialog>
   );
 };
