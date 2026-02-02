@@ -1,59 +1,69 @@
 [
   {
+    "id": "1",
     "username": "jdoe",
     "email": "jdoe@example.com",
     "role": "admin",
     "status": "active"
   },
   {
+    "id": "2",
     "username": "asmith",
     "email": "asmith@example.com",
     "role": "editor",
     "status": "active"
   },
   {
+    "id": "3",
     "username": "bjones",
     "email": "bjones@example.com",
     "role": "user",
     "status": "inactive"
   },
   {
+    "id": "4",
     "username": "clarkk",
     "email": "clarkk@example.com",
     "role": "user",
     "status": "banned"
   },
   {
+    "id": "5",
     "username": "dwilliams",
     "email": "dwilliams@example.com",
     "role": "editor",
     "status": "active"
   },
   {
+    "id": "6",
     "username": "emiller",
     "email": "emiller@example.com",
     "role": "user",
     "status": "active"
   },
   {
+    "id": "7",
     "username": "fgarcia",
     "email": "fgarcia@example.com",
     "role": "admin",
     "status": "inactive"
   },
   {
+    "id": "8",
     "username": "grodriguez",
     "email": "grodriguez@example.com",
     "role": "user",
     "status": "active"
   },
   {
+    "id": "9",
     "username": "hlee",
     "email": "hlee@example.com",
     "role": "editor",
     "status": "banned"
   },
   {
+    "id": "10",
     "username": "smartinez",
     "email": "smartinez@example.com",
     "role": "user",
