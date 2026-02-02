@@ -16,8 +16,8 @@ This document serves as the authoritative source of truth for the `practice-ai` 
 
 The project follows the **Next.js App Router** architecture.
 
--   **Framework**: [Next.js 16 (Canary/Latest)](https://nextjs.org/)
--   **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
+-   **Framework**: [Next.js 16.1.6](https://nextjs.org/)
+-   **Styling**: [Tailwind CSS ^4](https://tailwindcss.com/)
 -   **Language**: [TypeScript](https://www.typescriptlang.org/)
 -   **Runtime**: Node.js
 
@@ -95,6 +95,14 @@ npm run lint
 -   **Hydration**: Be mindful of hydration mismatches by ensuring server and client rendered content match.
 -   **Project State**: The project is currently in a "fresh start" state, with `app/page.tsx` being a clean slate for development.
 
+## 8. How this file is kept up to date
+
+This document is a **living document** and is automatically kept in sync with the codebase.
+
+-   **Automation**: A synchronization script (`scripts/sync-guideline.mjs`) runs to update folder structures, dependency versions, and timestamps.
+-   **Verification**: The `npm run check-guideline` command is used in CI/CD and pre-commit hooks to ensure the documentation reflects the current state of the project.
+-   **Manual Updates**: While structural changes are automated, architectural decisions and conventions should be updated manually in sections 2, 5, and 6.
+
 ---
 
-*Note: This guideline is a living document and must be updated whenever the project structure or core technologies evolve.*
+*Last Updated: 2026-02-02 08:36:49 (Auto-synced)*

@@ -1,0 +1,62 @@
+[
+  {
+    "username": "jdoe",
+    "email": "jdoe@example.com",
+    "role": "admin",
+    "status": "active"
+  },
+  {
+    "username": "asmith",
+    "email": "asmith@example.com",
+    "role": "editor",
+    "status": "active"
+  },
+  {
+    "username": "bjones",
+    "email": "bjones@example.com",
+    "role": "user",
+    "status": "inactive"
+  },
+  {
+    "username": "clarkk",
+    "email": "clarkk@example.com",
+    "role": "user",
+    "status": "banned"
+  },
+  {
+    "username": "dwilliams",
+    "email": "dwilliams@example.com",
+    "role": "editor",
+    "status": "active"
+  },
+  {
+    "username": "emiller",
+    "email": "emiller@example.com",
+    "role": "user",
+    "status": "active"
+  },
+  {
+    "username": "fgarcia",
+    "email": "fgarcia@example.com",
+    "role": "admin",
+    "status": "inactive"
+  },
+  {
+    "username": "grodriguez",
+    "email": "grodriguez@example.com",
+    "role": "user",
+    "status": "active"
+  },
+  {
+    "username": "hlee",
+    "email": "hlee@example.com",
+    "role": "editor",
+    "status": "banned"
+  },
+  {
+    "username": "smartinez",
+    "email": "smartinez@example.com",
+    "role": "user",
+    "status": "active"
+  }
+]

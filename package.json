@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "sync-guideline": "node scripts/sync-guideline.mjs",
+    "check-guideline": "node scripts/sync-guideline.mjs --check"
   },
   "dependencies": {
     "next": "16.1.6",
